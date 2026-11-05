@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183c35">
+  <meta name="description" content="Ученически наръчник за човечност, смелост и малките избори, които променят деня.">
+  <title>Наръчник по човечност</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+    :root {
+      --ink: #202d3a;
+      --forest: #183b56;
+      --leaf: #3d786b;
+      --paper: #f5f6f3;
+      --white: #ffffff;
+      --rust: #c75542;
+      --sun: #efc25b;
+      --blue: #4d7895;
+      --muted: #59666f;
+      --line: rgba(32, 45, 58, .16);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.65 var(--sans);
+    }
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      background-image: radial-gradient(rgba(32, 52, 47, .10) .55px, transparent .55px);
+      background-size: 7px 7px;
+      content: '';
+      opacity: .20;
+      pointer-events: none;
+    }
+    a { color: inherit; }
+    button { font: inherit; }
+    img { display: block; max-width: 100%; }
+    .skip-link {
+      position: fixed;
+      z-index: 20;
+      top: 10px;
+      left: 10px;
+      padding: 8px 14px;
+      transform: translateY(-160%);
+      background: var(--white);
+      color: var(--ink);
+    }
+    .skip-link:focus { transform: none; }
+    .topbar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      display: flex;
+      min-height: 72px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 76px);
+      border-bottom: 1px solid rgba(255,255,255,.15);
+      background: var(--forest);
+      color: var(--white);
+    }
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-decoration: none;
+    }
+    .wordmark-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.65);
+      border-radius: 50%;
+      color: var(--sun);
+      font-family: var(--serif);
+      font-size: 18px;
+    }
+    .nav-links {
+      position: absolute;
+      top: calc(100% + 1px);
+      right: clamp(18px, 5vw, 76px);
+      display: none;
+      width: min(340px, calc(100vw - 36px));
+      align-items: stretch;
+      padding: 8px 18px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: var(--forest);
+      box-shadow: 0 14px 30px rgba(11,26,40,.22);
+    }
+    .nav-links.is-open { display: grid; }
+    .nav-links a {
+      display: block;
+      padding: 11px 2px;
+      border-bottom: 1px solid rgba(255,255,255,.13);
+      color: rgba(255,255,255,.83);
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color .18s ease;
+    }
+    .nav-links a:last-child { border-bottom: 0; }
+    .nav-links a:hover, .nav-links a[aria-current="location"] { color: var(--sun); }
+    .menu-toggle {
+      display: inline-flex;
+      width: auto;
+      min-width: 124px;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    .menu-toggle:hover { border-color: var(--sun); background: rgba(255,255,255,.08); }
+    .menu-toggle:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; }
+    .menu-label { white-space: nowrap; }
+    .progress-track { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; }
+    .progress-fill { width: 0; height: 100%; background: var(--sun); }
+
+    .hero {
+      position: relative;
+      display: flex;
+      min-height: min(760px, calc(100svh - 72px));
+      align-items: flex-end;
+      overflow: hidden;
+      background: var(--forest);
+      color: var(--white);
+    }
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 36%;
+      opacity: .77;
+    }
+    .hero::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(11,26,40,.91) 0%, rgba(11,26,40,.70) 38%, rgba(11,26,40,.06) 100%), linear-gradient(0deg, rgba(11,26,40,.68), transparent 50%);
+      content: '';
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: min(760px, 100%);
+      padding: 100px clamp(24px, 9vw, 140px) 90px;
+      animation: arrive .8s both;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: var(--sun);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 26px; height: 1px; background: currentColor; content: ''; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; }
+    h1 { max-width: 700px; margin-bottom: 22px; font-size: clamp(44px, 7vw, 82px); }
+    .hero-content > p:not(.eyebrow) { max-width: 520px; margin-bottom: 30px; color: rgba(255,255,255,.86); font-size: 17px; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      background: var(--sun);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease;
+    }
+    .button:hover { transform: translateY(-2px); background: #f0cd6a; }
+    .button-quiet { border-color: rgba(255,255,255,.52); background: transparent; color: var(--white); }
+    .button-quiet:hover { background: rgba(255,255,255,.12); }
+    .hero-index {
+      position: absolute;
+      z-index: 1;
+      right: clamp(22px, 5vw, 76px);
+      bottom: 32px;
+      color: rgba(255,255,255,.72);
+      font-size: 11px;
+      letter-spacing: .08em;
+      writing-mode: vertical-rl;
+    }
+
+    main { overflow: clip; }
+    .section { padding: clamp(76px, 10vw, 136px) clamp(22px, 8vw, 120px); }
+    .section-inner { width: min(1120px, 100%); margin: 0 auto; }
+    .section-head { display: grid; grid-template-columns: 90px 1fr; gap: 24px; align-items: start; margin-bottom: 48px; }
+    .section-number { padding-top: 10px; color: var(--rust); font-size: 12px; font-weight: 700; letter-spacing: .10em; }
+    .section-head h2 { max-width: 730px; margin: 0 0 15px; font-size: clamp(35px, 5vw, 58px); }
+    .section-head p { max-width: 610px; margin: 0; color: var(--muted); }
+    .rule { width: 100%; height: 1px; margin: 0 0 50px; background: var(--line); }
+    .intro-strip {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: stretch;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .intro-question { padding: 38px 44px 38px 0; }
+    .intro-question h3 { margin-bottom: 16px; font-size: 29px; }
+    .intro-question p { max-width: 600px; margin-bottom: 0; color: var(--muted); }
+    .four-ways { display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--line); }
+    .way {
+      min-height: 90px;
+      padding: 18px 22px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      transition: background .2s ease;
+    }
+    .way:nth-child(2n) { border-right: 0; }
+    .way:nth-last-child(-n+2) { border-bottom: 0; }
+    .way:hover { background: rgba(230,189,82,.18); }
+    .way small { display: block; margin-bottom: 3px; color: var(--rust); font-size: 10px; font-weight: 700; }
+    .way strong { font-family: var(--serif); font-size: 17px; font-weight: 600; }
+
+    .section-forest { background: var(--forest); color: var(--white); }
+    .section-forest .section-number, .section-forest .eyebrow { color: var(--sun); }
+    .section-forest .section-head p { color: rgba(255,255,255,.68); }
+    .section-forest .rule { background: rgba(255,255,255,.19); }
+    .profiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid rgba(32,45,58,.16); }
+    .profile {
+      display: flex;
+      min-height: 300px;
+      flex-direction: column;
+      padding: 25px 22px 24px 0;
+      border-right: 1px solid rgba(255,255,255,.23);
+    }
+    .profile + .profile { padding-left: 22px; }
+    .profile:last-child { border-right: 0; }
+    .profile:nth-child(3n) { border-right: 0; }
+    .profile:nth-child(n+4) { border-top: 1px solid rgba(32,45,58,.16); }
+    .profile:nth-child(3n+1) { padding-left: 0; }
+    .profile-kicker { margin-bottom: 14px; color: var(--sun); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .profile h3 { margin-bottom: 13px; font-size: 24px; }
+    .profile p { margin-bottom: 20px; color: rgba(255,255,255,.72); font-size: 13px; }
+    .profile details { margin-top: auto; border-top: 1px solid rgba(255,255,255,.23); }
+    .profile summary { padding-top: 12px; color: var(--sun); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .profile details p { margin: 10px 0 0; }
+    .profile .profile-full { margin-top: 16px; padding: 14px; border: 1px solid rgba(32,45,58,.12); background: rgba(255,255,255,.82); }
+    .profile .profile-full > summary { padding: 0; color: var(--forest); font-size: 13px; }
+    .profile .profile-long { padding-top: 10px; }
+    .profile .profile-long > p { margin: 9px 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .profile .profile-long h4 { margin: 16px 0 4px; color: var(--ink); font-family: var(--sans); font-size: 13px; }
+    .profile .profile-long details { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    .profile .profile-long details summary { padding: 0; color: var(--rust); font-size: 12px; }
+    .profile .profile-long details p { margin: 8px 0 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .abdzhiev-feature { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 32px; align-items: center; margin-top: 54px; }
+    .abdzhiev-feature h3 { margin-bottom: 14px; font-size: 30px; }
+    .abdzhiev-feature p { color: rgba(255,255,255,.75); }
+    .abdzhiev-images { display: grid; grid-template-columns: 1fr .65fr; gap: 12px; align-items: center; }
+    .media-open {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      background: #e8dfcb;
+      color: var(--ink);
+      cursor: zoom-in;
+      text-align: left;
+    }
+    .media-open img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .media-open:hover img { transform: scale(1.025); }
+    .abdzhiev-images .portrait { aspect-ratio: 1.07; }
+    .abdzhiev-images .quote-image { aspect-ratio: 1.07; }
+    .asset-note { margin: 12px 0 0; color: rgba(255,255,255,.58); font-size: 11px; }
+
+    .cases-section { background: #eaf0f1; }
+    .cases { display: grid; gap: 28px; }
+    .case {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--white);
+    }
+    .case:nth-child(even) .case-copy { order: 2; }
+    .case:nth-child(even) .case-gallery { order: 1; }
+    .case-copy { padding: clamp(24px, 4vw, 42px); }
+    .case-label { display: inline-block; margin-bottom: 12px; color: var(--rust); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .case h3 { margin-bottom: 12px; font-size: 28px; }
+    .case-copy > p { color: var(--muted); font-size: 14px; }
+    .choice-question { margin: 22px 0 12px; font-weight: 700; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choice {
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .choice:hover, .choice[aria-pressed="true"] { border-color: var(--forest); background: var(--forest); color: var(--white); }
+    .choice-response { min-height: 42px; margin: 12px 0 0; color: var(--leaf); font-size: 13px; }
+    .case-gallery { display: grid; min-height: 100%; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; background: var(--paper); }
+    .case-gallery .media-open { min-height: 150px; }
+    .case-gallery .media-open:first-child:nth-last-child(3) { grid-row: span 2; }
+    .case-gallery .media-open:only-child { grid-column: span 2; grid-row: span 2; }
+    .case-gallery img { object-position: center; }
+    .case-gallery .media-open:first-child:nth-last-child(4) img { object-position: 45% center; }
+    .safety-note { padding: 14px 18px; border-left: 3px solid var(--blue); background: rgba(71,114,138,.09); color: var(--muted); font-size: 12px; }
+
+    .comics-section { background: var(--white); }
+    .comic-intro { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 34px; align-items: center; margin: 0 0 44px; }
+    .comic-intro .media-open { aspect-ratio: .74; max-height: 500px; }
+    .comic-intro h3 { margin-bottom: 12px; font-size: 32px; }
+    .comic-intro p { color: var(--muted); }
+    .comic-story { padding: 34px 0 42px; border-top: 1px solid var(--line); }
+    .comic-story-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+    .comic-story h3 { margin: 0; font-size: 28px; }
+    .comic-story-head p { margin: 0; color: var(--muted); font-size: 12px; }
+    .comic-pages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .comic-page { min-width: 0; }
+    .comic-page .media-open { aspect-ratio: .70; background: #e9dfc9; }
+    .comic-page img { object-position: top center; }
+    .page-number { display: flex; align-items: center; gap: 9px; margin: 12px 0 5px; font-size: 12px; font-weight: 700; }
+    .page-number span { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--forest); color: var(--white); font-size: 10px; }
+    .comic-page p { margin: 0; color: var(--muted); font-size: 11px; }
+    .mini-comic { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 28px; align-items: center; }
+    .mini-comic .media-open { aspect-ratio: 1.55; }
+    .mini-comic p { margin: 0; color: var(--muted); }
+
+    .good-section { background: #e2e8dd; }
+    .good-story { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; align-items: center; }
+    .good-story .media-open { aspect-ratio: 1; background: #d7d1bc; }
+    .good-story .media-open img { object-fit: contain; }
+    .good-story h3 { margin-bottom: 15px; font-size: 31px; }
+    .good-story p { color: var(--muted); }
+    .quote-line { margin: 24px 0 0; padding: 4px 0 4px 18px; border-left: 2px solid var(--rust); color: var(--forest) !important; font-family: var(--serif); font-size: 20px; }
+
+    .code-section { background: #f0e2c7; }
+    .code-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .7fr); gap: 42px; align-items: start; }
+    .principle-groups { border-top: 1px solid rgba(32,52,47,.23); }
+    .principle-group { padding: 20px 0 14px; border-bottom: 1px solid rgba(32,52,47,.23); }
+    .principle-group h3 { margin-bottom: 12px; color: var(--rust); font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .principle-group ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin: 0; padding: 0; list-style: none; counter-reset: principle; }
+    #injustice + ol { counter-reset: principle 4; }
+    #common-good + ol { counter-reset: principle 7; }
+    .principle-group li { display: flex; gap: 12px; padding: 8px 0; counter-increment: principle; font-size: 13px; }
+    .principle-group li::before { display: grid; width: 23px; height: 23px; flex: 0 0 23px; place-items: center; border-radius: 50%; background: var(--leaf); color: var(--white); content: counter(principle); font-size: 10px; font-weight: 700; }
+    .principle-group:nth-child(2) li::before { background: var(--rust); }
+    .code-poster .media-open { aspect-ratio: .70; }
+    .code-poster img { object-position: top center; }
+    .code-poster figcaption { margin-top: 10px; color: var(--muted); font-size: 11px; }
+    .pledge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 32px;
+      padding: 19px 0;
+      border-top: 1px solid rgba(32,52,47,.23);
+      border-bottom: 1px solid rgba(32,52,47,.23);
+    }
+    .pledge p { margin: 0; font-family: var(--serif); font-size: 20px; }
+    .pledge-button { flex: 0 0 auto; border-color: var(--forest); background: var(--forest); color: var(--white); }
+    .pledge-button:hover { background: #2a5349; }
+    .pledge-button[aria-pressed="true"] { border-color: var(--rust); background: var(--rust); }
+
+    .footer { padding: 32px clamp(22px, 8vw, 120px); background: var(--forest); color: rgba(255,255,255,.75); }
+    .footer-inner { display: flex; width: min(1120px, 100%); align-items: center; justify-content: space-between; gap: 18px; margin: 0 auto; font-size: 11px; }
+    .footer p { margin: 0; }
+    .to-top { color: var(--sun); font-weight: 700; text-decoration: none; }
+
+    dialog {
+      width: min(94vw, 1100px);
+      max-width: none;
+      max-height: 94svh;
+      padding: 0;
+      overflow: visible;
+      border: 0;
+      background: transparent;
+      color: var(--white);
+    }
+    dialog::backdrop { background: rgba(10,20,18,.91); backdrop-filter: blur(4px); }
+    .lightbox-frame { position: relative; display: grid; min-height: 180px; place-items: center; }
+    .lightbox-image { max-width: 100%; max-height: 84svh; object-fit: contain; }
+    .lightbox-caption { margin: 10px 60px 0; color: rgba(255,255,255,.77); font-size: 12px; text-align: center; }
+    .lightbox-close, .lightbox-step {
+      position: absolute;
+      z-index: 1;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.55);
+      background: rgba(20,35,31,.76);
+      color: white;
+      cursor: pointer;
+    }
+    .lightbox-close { top: -50px; right: 0; font-size: 22px; }
+    .lightbox-step { top: 50%; transform: translateY(-50%); font-size: 22px; }
+    .lightbox-prev { left: -52px; }
+    .lightbox-next { right: -52px; }
+    .lightbox-close:hover, .lightbox-step:hover { background: var(--rust); }
+
+    @keyframes arrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    @media (max-width: 1000px) {
+      .profiles { grid-template-columns: 1fr 1fr; }
+      .profile:nth-child(2) { border-right: 0; }
+      .profile:nth-child(3) { padding-left: 0; border-top: 1px solid rgba(255,255,255,.23); }
+      .profile:nth-child(4) { border-top: 1px solid rgba(255,255,255,.23); }
+      .comic-pages { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .comic-page .media-open { aspect-ratio: .82; }
+    }
+    @media (max-width: 720px) {
+      html { scroll-padding-top: 68px; }
+      .topbar { min-height: 64px; padding: 0 18px; }
+      .menu-toggle { display: inline-flex; width: 42px; min-width: 42px; padding: 0; }
+      .menu-label { display: none; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 1px);
+        right: 18px;
+        left: auto;
+        display: none;
+        align-items: stretch;
+        width: min(340px, calc(100vw - 36px));
+        padding: 8px 18px;
+      }
+      .nav-links.is-open { display: grid; }
+      .nav-links a { padding: 11px 2px; font-size: 13px; }
+      .hero { min-height: min(700px, calc(100svh - 64px)); }
+      .hero-image { object-position: 57% center; }
+      .hero::after { background: linear-gradient(0deg, rgba(11,26,40,.94), rgba(11,26,40,.50) 55%, rgba(11,26,40,.08)); }
+      .hero-content { padding: 80px 24px 74px; }
+      .hero-content > p:not(.eyebrow) { font-size: 15px; }
+      .hero-index { right: 14px; bottom: 14px; }
+      .section { padding: 76px 22px; }
+      .section-head { grid-template-columns: 44px 1fr; gap: 12px; margin-bottom: 34px; }
+      .section-head h2 { font-size: 38px; }
+      .intro-strip, .abdzhiev-feature, .comic-intro, .good-story, .code-layout { grid-template-columns: 1fr; }
+      .intro-question { padding: 26px 0; }
+      .four-ways { border-left: 0; border-top: 1px solid var(--line); }
+      .profiles { grid-template-columns: 1fr 1fr; }
+      .profile { min-height: 280px; padding-right: 14px; }
+      .profile + .profile { padding-left: 14px; }
+      .profile:nth-child(odd) { padding-left: 0; }
+      .profile:nth-child(even) { border-right: 0; }
+      .profile:nth-child(3) { padding-left: 0; }
+      .abdzhiev-feature { gap: 16px; }
+      .abdzhiev-images { grid-template-columns: 1fr .8fr; }
+      .case { grid-template-columns: 1fr; }
+      .case:nth-child(even) .case-copy, .case:nth-child(even) .case-gallery { order: initial; }
+      .case-gallery { min-height: 230px; }
+      .case-gallery .media-open { min-height: 110px; }
+      .comic-intro { gap: 22px; }
+      .comic-intro .media-open { width: min(75%, 360px); max-height: none; margin: 0 auto; }
+      .comic-story-head { display: block; }
+      .comic-story-head p { margin-top: 7px; }
+      .comic-pages { grid-template-columns: 1fr 1fr; }
+      .comic-page .media-open { aspect-ratio: .68; }
+      .mini-comic { grid-template-columns: 1fr; gap: 18px; }
+      .mini-comic .media-open { aspect-ratio: 1.5; }
+      .code-layout { gap: 28px; }
+      .principle-group ol { grid-template-columns: 1fr; }
+      .pledge { align-items: flex-start; flex-direction: column; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .lightbox-prev { left: 4px; }
+      .lightbox-next { right: 4px; }
+      .lightbox-step { width: 38px; height: 38px; }
+      .lightbox-close { top: -48px; right: 4px; }
+    }
+    @media (max-width: 420px) {
+      .profiles { grid-template-columns: 1fr; }
+      .profile, .profile + .profile, .profile:nth-child(3) { min-height: 0; padding: 20px 0; border-right: 0; border-top: 1px solid rgba(255,255,255,.23); }
+      .profile:first-child { border-top: 0; }
+      .case-copy { padding: 23px 20px; }
+      .comic-pages { gap: 12px; }
+      .comic-page .media-open { aspect-ratio: .60; }
+      .section-head { grid-template-columns: 34px 1fr; gap: 8px; }
+    }
+
+    :root {
+      --ink: #202d3a;
+      --forest: #183b56;
+      --leaf: #3d786b;
+      --paper: #f5f6f3;
+      --white: #ffffff;
+      --rust: #c75542;
+      --sun: #efc25b;
+      --blue: #4d7895;
+      --muted: #59666f;
+      --line: rgba(32, 45, 58, .16);
+    }
+    body { background: #f5f6f3; }
+    .topbar { min-height: 78px; box-shadow: 0 4px 20px rgba(13, 35, 33, .16); }
+    .wordmark-mark { width: 38px; height: 38px; border-radius: 8px 8px 8px 2px; border-color: var(--sun); }
+    .nav-links a { padding: 9px 0; font-size: 12px; }
+    .hero { min-height: min(820px, calc(100svh - 78px)); }
+    .hero-image { object-position: center 39%; filter: saturate(.9); }
+    .hero-content { width: min(1000px, 100%); padding: clamp(80px, 11vh, 140px) clamp(24px, 8vw, 120px) clamp(70px, 9vh, 112px); }
+    h1 { max-width: 820px; font-size: clamp(54px, 7vw, 100px); }
+    .section { padding-top: clamp(84px, 9vw, 128px); padding-bottom: clamp(84px, 9vw, 128px); }
+    .section-head h2 { max-width: 820px; }
+    .section-head p { font-size: 15px; line-height: 1.8; }
+    .section-number { color: var(--rust); }
+    .intro-strip { padding: 8px 0; }
+    .way { min-height: 100px; }
+    .way strong { display: block; max-width: 220px; line-height: 1.35; }
+    .case { border-top: 3px solid var(--rust); box-shadow: 0 8px 22px rgba(24, 45, 48, .07); }
+    .case h3 { font-size: 30px; }
+    .case-gallery .media-open { background: #d7d9d2; }
+    .comics-section { background: #edf2f1; }
+    .comic-intro { grid-template-columns: minmax(240px, .7fr) minmax(0, 1.3fr); gap: clamp(28px, 5vw, 76px); margin-bottom: 56px; }
+    .comic-intro .media-open { width: min(100%, 390px); aspect-ratio: .73; max-height: none; margin: 0 auto; border: 8px solid var(--white); box-shadow: 0 18px 42px rgba(18, 59, 57, .15); }
+    .comic-intro h3 { max-width: 650px; font-size: clamp(32px, 4vw, 48px); }
+    .comic-intro p { max-width: 660px; font-size: 15px; line-height: 1.8; }
+    .comic-story { margin-top: 42px; padding: clamp(24px, 4vw, 44px); border: 1px solid rgba(25,47,53,.15); background: var(--white); box-shadow: 0 14px 36px rgba(18,59,57,.08); }
+    .comic-story-head { align-items: flex-start; margin-bottom: 28px; }
+    .comic-story h3 { font-size: clamp(25px, 3vw, 36px); }
+    .comic-story-head p { padding-top: 7px; color: var(--rust); font-size: 12px; font-weight: 700; }
+    .comic-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 0; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .comic-tab { flex: 1 1 180px; min-height: 46px; padding: 8px 16px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 13px; font-weight: 700; line-height: 1.3; text-align: left; white-space: normal; cursor: pointer; }
+    .comic-tab[aria-selected="true"] { border-color: var(--forest); background: var(--forest); color: var(--white); }
+    .comic-panel { padding-top: 24px; }
+    .comic-panel[hidden] { display: none; }
+    .reader-frame { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: clamp(8px, 2vw, 22px); }
+    .reader-arrow { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid rgba(255,255,255,.24); border-radius: 50%; background: var(--forest); color: var(--white); font-size: 24px; cursor: pointer; transition: background .2s ease, transform .2s ease; }
+    .reader-arrow:hover { transform: scale(1.06); background: var(--rust); }
+    .reader-page-wrap { display: grid; min-width: 0; justify-items: center; padding: clamp(12px, 2vw, 24px); overflow: auto; background-color: #e7ecef; background-image: radial-gradient(rgba(32,45,58,.10) .6px, transparent .6px); background-size: 8px 8px; }
+    .reader-page-image { display: block; width: min(100%, 900px); height: auto; max-width: 100%; border: 5px solid var(--white); background: var(--white); box-shadow: 0 16px 38px rgba(25,47,53,.20); transition: width .2s ease; }
+    .reader-page-wrap.is-zoomed .reader-page-image { width: 1120px; max-width: none; }
+    .reader-meta { display: grid; grid-template-columns: 1fr auto; gap: 8px 20px; align-items: center; margin: 18px 70px 0; }
+    .reader-title { margin: 0; font-family: var(--serif); font-size: 21px; }
+    .reader-count { margin: 0; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .reader-progress { grid-column: 1 / -1; height: 4px; overflow: hidden; background: rgba(25,47,53,.12); }
+    .reader-progress span { display: block; width: 20%; height: 100%; background: var(--rust); transition: width .25s ease; }
+    .reader-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 70px 0; }
+    .reader-step { min-height: 42px; padding: 8px 14px; border: 1px solid var(--forest); background: transparent; color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .reader-step:hover { background: var(--forest); color: var(--white); }
+    .reader-pages { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    .reader-page-button { min-width: 38px; height: 38px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .reader-page-button[aria-current="page"] { border-color: var(--rust); background: var(--rust); color: var(--white); }
+    .reader-zoom { display: inline-flex; min-height: 38px; align-items: center; gap: 8px; margin-top: 16px; padding: 7px 12px; border: 1px solid var(--line); background: var(--white); color: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .reader-zoom[aria-pressed="true"] { border-color: var(--blue); background: var(--blue); color: white; }
+    .reader-zoom-row { text-align: center; }
+    .reader-hint { margin: 14px 70px 0; color: var(--muted); font-size: 12px; text-align: center; }
+    .gestures-panel { padding: clamp(18px, 3vw, 32px); background: var(--forest); color: white; }
+    .gestures-panel .media-open { width: min(100%, 488px); margin: 0 auto; background: #f5f6f3; cursor: zoom-in; }
+    #story-kindness .gestures-panel .media-open { width: min(100%, 1120px); }
+    #story-school .gestures-panel .media-open { width: min(100%, 690px); }
+    .gestures-panel .media-open img { width: 100%; height: auto; object-fit: contain; }
+    .gestures-caption { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-top: 22px; }
+    .gestures-caption h4 { margin: 0; font-family: var(--serif); font-size: 23px; }
+    .gestures-caption p { max-width: 620px; margin: 0; color: rgba(255,255,255,.76); font-size: 13px; }
+    .mini-comic { display: block; }
+    .mini-comic .media-open { aspect-ratio: auto; }
+    .mini-comic p { margin: 0; }
+    .good-section { background: #e4eee9; }
+    .good-story .media-open { border: 8px solid rgba(255,255,255,.72); box-shadow: 0 14px 35px rgba(18,59,57,.12); }
+    .code-section { background: #e9eff3; }
+    .footer { border-top: 5px solid var(--sun); }
+    .lightbox { width: min(96vw, 1440px); max-height: 96svh; overflow: auto; }
+    .lightbox-frame { min-height: 0; }
+    .lightbox-image { width: auto; max-width: 100%; max-height: none; }
+    .abdzhiev-feature { display: block; margin-top: 64px; }
+    .abdzhiev-feature > div:first-child { max-width: 820px; margin-bottom: 30px; }
+    .abdzhiev-feature h3 { font-size: 38px; }
+    .abdzhiev-feature > div:first-child > p:not(.eyebrow) { color: rgba(255,255,255,.88); font-size: 18px; line-height: 1.8; }
+    .abdzhiev-feature .asset-note { color: rgba(255,255,255,.78); font-size: 14px; line-height: 1.7; }
+    .abdzhiev-images { grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+    .abdzhiev-images .portrait, .abdzhiev-images .quote-image { width: 100%; height: auto; aspect-ratio: auto; overflow: visible; background: transparent; }
+    .abdzhiev-images .portrait img, .abdzhiev-images .quote-image img { width: 100%; height: auto; object-fit: contain; }
+    .abdzhiev-images .portrait img, .abdzhiev-images .quote-image img { max-width: 700px; margin: 0 auto; border: 7px solid #fff; box-shadow: 0 12px 30px rgba(24, 59, 86, .16); }
+    .abdzhiev-images .media-open { transition: filter .2s ease; }
+    .abdzhiev-images .media-open:hover img { transform: none; }
+    .abdzhiev-images .media-open:hover { filter: brightness(1.04); }
+    .section-forest { background: #e6f0f4; color: var(--ink); }
+    .section-forest .section-number, .section-forest .eyebrow, .profile-kicker, .profile summary { color: var(--rust); }
+    .section-forest .section-head p, .profile p, .abdzhiev-feature p, .abdzhiev-feature .asset-note { color: var(--muted); }
+    .abdzhiev-feature > div:first-child > p:not(.eyebrow) { color: var(--ink); }
+    .section-forest .rule, .profiles { border-color: var(--line); }
+    .profile, .profile details { border-color: var(--line); }
+    .profile:nth-child(3), .profile:nth-child(4) { border-top-color: var(--line); }
+    .profile:nth-child(2) { border-right-color: var(--line); }
+    .words-section { background: #e8f0f3; }
+    .words-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); gap: clamp(30px, 5vw, 72px); align-items: start; }
+    .words-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .words-group { padding: 22px; border-top: 3px solid var(--leaf); background: rgba(255,255,255,.82); }
+    .words-group:nth-child(2) { border-top-color: var(--sun); }
+    .words-group:nth-child(3) { border-top-color: var(--blue); }
+    .words-group:nth-child(4) { border-top-color: var(--rust); }
+    .words-group h3 { margin-bottom: 14px; font-size: 19px; }
+    .phrase-list { display: grid; gap: 7px; }
+    .phrase-button { display: flex; width: 100%; min-height: 40px; align-items: flex-start; gap: 9px; padding: 8px 10px; border: 1px solid transparent; background: transparent; color: var(--ink); font-size: 13px; line-height: 1.45; text-align: left; cursor: pointer; }
+    .phrase-button::before { flex: 0 0 auto; color: var(--leaf); content: '•'; font-size: 14px; font-weight: 700; line-height: 1.4; }
+    .phrase-button:hover, .phrase-button:focus-visible { border-color: rgba(61,120,107,.26); background: #e8f3ed; }
+    .words-message { grid-column: 1 / -1; padding: 24px; border-left: 4px solid var(--rust); background: #fff; }
+    .words-message h3 { margin-bottom: 10px; font-size: 21px; }
+    .words-message p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .words-cards { display: grid; gap: 18px; }
+    .words-card { margin: 0; }
+    .words-card.is-featured .media-open { width: min(100%, 760px); }
+    .words-card .media-open { width: min(100%, 390px); margin: 0 auto; background: #e9edf0; box-shadow: 0 12px 28px rgba(24,59,86,.12); }
+    .words-card img { width: 100%; height: auto; object-fit: contain; }
+    .words-card figcaption { margin-top: 9px; color: var(--muted); font-size: 12px; text-align: center; }
+    .copy-status { position: fixed; z-index: 20; right: 20px; bottom: 20px; max-width: min(360px, calc(100vw - 40px)); padding: 12px 16px; background: var(--forest); color: #fff; font-size: 13px; box-shadow: 0 8px 24px rgba(24,59,86,.24); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+    .copy-status.is-visible { opacity: 1; transform: none; }
+    @media (max-width: 900px) {
+      .words-layout { grid-template-columns: 1fr; }
+      .words-cards { grid-template-columns: 1fr; align-items: start; }
+    }
+    @media (max-width: 520px) {
+      .words-groups, .words-cards { grid-template-columns: 1fr; }
+      .words-group { padding: 18px; }
+      .words-message { grid-column: auto; padding: 20px; }
+    }
+    @media (max-width: 720px) {
+      .abdzhiev-feature { margin-top: 38px; }
+      .abdzhiev-feature h3 { font-size: 32px; }
+      .abdzhiev-feature > div:first-child > p:not(.eyebrow) { font-size: 16px; }
+      .abdzhiev-images { grid-template-columns: minmax(0, 1fr); }
+    }
+    .lightbox-close { position: fixed; top: 16px; right: 18px; }
+    @media (max-width: 1000px) {
+      .reader-meta, .reader-tools, .reader-hint { margin-right: 24px; margin-left: 24px; }
+    }
+    @media (max-width: 720px) {
+      .topbar { min-height: 64px; }
+      .hero { min-height: min(720px, calc(100svh - 64px)); }
+      .hero-content { width: 100%; padding: 90px 24px 80px; }
+      h1 { max-width: 600px; font-size: clamp(48px, 12vw, 76px); }
+      .comic-intro { grid-template-columns: 1fr; }
+      .comic-intro .media-open { width: min(82%, 350px); }
+      .comic-story { padding: 20px 14px 24px; }
+      .comic-story-head { display: block; }
+      .comic-story-head p { margin-top: 8px; }
+      .reader-frame { grid-template-columns: 38px minmax(0,1fr) 38px; gap: 6px; }
+      .reader-arrow { width: 38px; height: 38px; font-size: 20px; }
+      .reader-page-wrap { padding: 8px; }
+      .reader-page-image { width: 100%; border-width: 3px; }
+      .reader-page-wrap.is-zoomed .reader-page-image { width: 760px; max-width: none; }
+      .reader-meta { grid-template-columns: 1fr; margin: 14px 0 0; text-align: center; }
+      .reader-progress { grid-column: 1; }
+      .reader-title { font-size: 19px; }
+      .reader-tools { flex-direction: column; margin: 14px 0 0; }
+      .reader-pages { order: -1; }
+      .reader-step { width: 100%; }
+      .reader-hint { margin: 12px 0 0; }
+      .gestures-caption { flex-direction: column; gap: 10px; }
+      .lightbox { width: 100vw; max-height: 100svh; }
+      .lightbox-close { top: 8px; right: 8px; }
+      .lightbox-caption { margin: 10px 48px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Към съдържанието</a>
+  <header class="topbar" id="top">
+    <a class="wordmark" href="#nachalo" aria-label="Към началото на наръчника">
+      <span class="wordmark-mark" aria-hidden="true">Н</span>
+      <span>НАРЪЧНИК ПО ЧОВЕЧНОСТ</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Отвори менюто с раздели" aria-expanded="false" aria-controls="primary-navigation">
+      <span aria-hidden="true">☰</span><span class="menu-label">Раздели</span>
+    </button>
+    <nav class="nav-links" id="primary-navigation" aria-label="Навигация по разделите">
+      <a href="#nachalo">Начало</a>
+      <a href="#buditeli">Будители</a>
+      <a href="#kazusi">Казуси</a>
+      <a href="#kadri">Комикси</a>
+      <a href="#dobro">Добри примери</a>
+      <a href="#dumi">Думи</a>
+      <a href="#kodeks">Кодекс</a>
+    </nav>
+    <div class="progress-track" aria-hidden="true"><div class="progress-fill"></div></div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="nachalo" aria-labelledby="hero-title">
+      <img class="hero-image" src="viber_image_2026-11-02_07-20-23-206.jpg" alt="Корица на ученическата история „Будител на доброто — днес отвъд екрана“">
+      <div class="hero-content">
+        <p class="eyebrow">Ученически наръчник · 4 посоки</p>
+        <h1 id="hero-title">Наръчник по човечност</h1>
+        <p>Какво правим, когато някой има нужда от нас? Истории, трудни избори и малки действия, с които започва промяната.</p>
+        <div class="hero-actions">
+          <a class="button" href="#buditeli">Отвори наръчника <span aria-hidden="true">→</span></a>
+          <a class="button button-quiet" href="#kazusi">Помисли над казус</a>
+        </div>
+      </div>
+      <span class="hero-index">ЕДНА ПОСТЪПКА МОЖЕ ДА ПРОМЕНИ ДЕНЯ</span>
+    </section>
+
+    <section class="section" aria-labelledby="idea-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">01 / ИДЕЯ</span>
+          <div>
+            <h2 id="idea-title">Човечността е избор.</h2>
+            <p>Този наръчник не дава готови присъди. Той събира истории и въпроси, които ни помагат да видим човека до себе си и последствията от собствените си решения.</p>
+          </div>
+        </div>
+        <div class="intro-strip">
+          <div class="intro-question">
+            <h3>Откъде започва доброто?</h3>
+            <p>Разгледай четирите посоки, избери казус, прочети комикс или вземи един принцип със себе си за днес.</p>
+          </div>
+          <div class="four-ways" aria-label="Четирите посоки на наръчника">
+            <a class="way" href="#buditeli"><small>01 · ПРИМЕР</small><strong>Будители през времето</strong></a>
+            <a class="way" href="#kazusi"><small>02 · ИЗБОР</small><strong>А ти как би постъпил?</strong></a>
+            <a class="way" href="#kadri"><small>03 · ИСТОРИЯ</small><strong>Доброто в кадри</strong></a>
+            <a class="way" href="#dobro"><small>04 · ДЕЙСТВИЕ</small><strong>Доброто е заразно</strong></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-forest" id="buditeli" aria-labelledby="buditeli-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">02 / ПРИМЕР</span>
+          <div>
+            <h2 id="buditeli-title">Будители през времето</h2>
+            <p>Хора, чиито знания, смелост или обществена дейност са оставили следа. Биографията е само началото; важен е изборът, който стои зад нея.</p>
+          </div>
+        </div>
+        <div class="rule"></div>
+        <div class="profiles">
+          <article class="profile">
+            <span class="profile-kicker">Създателят на умове · Наука и образование</span>
+            <h3>Теодосий Теодосиев</h3>
+            <p>Учителят Тео е съвременен будител: показва как упоритият труд и доверието в ученика могат да отворят път към големи научни постижения.</p>
+            <details class="profile-full">
+              <summary>Разгъни историята и методите му</summary>
+              <div class="profile-long">
+                <p>Роден през 1947 г. в Казанлък, Теодосий Теодосиев създава легендарната си школа по физика, която от десетилетия е едновременно научен и духовен феномен. Той е съвременен будител, който показва, че просветителите не принадлежат само на учебниците за XIX век. В материала е подчертано, че работи със забележителна лична отдаденост въпреки бюрократичните пречки и критиките към учебните програми.</p>
+                <p>Учениците му са спечелили над 100 медала от Международната олимпиада по физика. Изпратеният текст сравнява броя им с общия брой медали на Франция и Великобритания. Това сравнение е част от ученическия материал и следва да се сверява спрямо актуалните резултати.</p>
+                <p>Сред възпитаниците му е проф. Теньо Попминчев, създател на рентгенов лазер. Според подадения материал Нобелови лауреати го определят като един от десетте учени на бъдещето.</p>
+                <details>
+                  <summary>Неговият подход към ученето</summary>
+                  <p>Неговата „религия на упорития труд“ поставя дисциплината и постоянството пред идеята, че успехът зависи само от таланта. В материала 20 000 часа целенасочена работа са дадени като ориентир за овладяване на сложна област, а не като универсално научно правило.</p>
+                  <p>Той дава личен пример за работа до завършване, а не само до изпълнение на формална норма: „Разликата между мен и много мои колеги е тази, че на някой, като му платят 20 часа, на двадесетия час пуска тебешира и спира дотам. Аз продължавам 2000 часа, докато свърша работата.“</p>
+                  <p>Той се вижда като преносител на „кошничката с дарове“ от знания и умения, събирани от поколения, която трябва да надгради и предаде нататък. Нарича учениците си с обич „малки джедаи“.</p>
+                  <p>С новите ученици първо се стреми да премахне страха от трудностите и да им вдъхне вяра, че с правилен подход могат да разгърнат потенциала си.</p>
+                </details>
+                <details>
+                  <summary>Науката има нужда и от изкуство</summary>
+                  <p>За Учителя Тео най-големият успех не са златните медали, а това, че учениците му могат да се просълзят пред картините на Сезан. Той иска да възпитава не „машини за формули“, а мислещи и чувствителни личности с широка обща култура и развита емоционална интелигентност.</p>
+                  <p>Историята поставя и болезнен обществен въпрос: докога ще разчитаме на саможертвата на отделни вдъхновени учители, вместо да подкрепяме и разпространяваме работещите им методи? В изпратения текст остава и образът на човек, оставил „планини от знания и интелект“ в среда, в която институциите невинаги разпознават истинските стълбове на обществото.</p>
+                </details>
+                <details>
+                  <summary>Източници и автори</summary>
+                  <p>Посочени източници в предоставения материал: книгата „Моите вдъхновители“ от Иво Сиромахов и nauka.bg.</p>
+                  <p>Изготвили: Спасимир Крънчев (9 а), Александър Йорданов (10 д), Мехмед Чулаков (9 б).</p>
+                  <p>Екип по проекта: Спасимир Крънчев (9а), Александър Йорданов (10д), Мехмед Чулаков (9б).</p>
+                </details>
+              </div>
+            </details>
+          </article>
+          <article class="profile">
+            <span class="profile-kicker">Медицина и новаторство</span>
+            <h3>Проф. д-р Александър Чирков</h3>
+            <p>Кардиохирург и пионер, посветил работата си на развитието на съвременната сърдечна хирургия в България.</p>
+            <details class="profile-full">
+              <summary>Разгъни историята и наследството му</summary>
+              <div class="profile-long">
+                <p>Проф. д-р Александър Чирков (1938–2020) е световноизвестен български кардиохирург и създател на университетската болница „Св. Екатерина“. В предоставения материал неговата цел е описана като стремеж българските пациенти да получават грижа на високо европейско ниво.</p>
+                <details>
+                  <summary>Пионерска стъпка в кардиохирургията</summary>
+                  <p>През 1986 г. Чирков извършва първата успешна сърдечна трансплантация в България. Според предоставения материал тя е първа не само у нас, но и на Балканите и в Източния блок. Въпреки тежките политически и икономически условия той изгражда високотехнологична клиника и обучава цяло поколение български лекари, които да спасяват човешки животи у нас и по света.</p>
+                </details>
+                <details>
+                  <summary>Кои ценности личат в действията му?</summary>
+                  <p>В делата му личат новаторство, смелост и хуманизъм. Материалът подчертава вътрешната свобода да отстоява истината, да се противопоставя на статуквото и да поема пълна отговорност в критични ситуации, воден от мисълта за пациента.</p>
+                </details>
+                <details>
+                  <summary>Какво можем да научим днес?</summary>
+                  <p>Днес тези ценности живеят във всеки лекар, който избира да остане и да се бори за по-добро здравеопазване в България, във всеки новатор, който търси решение, и във всеки човек, който протяга ръка на изпаднал в беда, вместо да остане безразличен.</p>
+                  <p>Големите промени започват с лична смелост. Истинският будител не чака по-добри времена, а ги създава с труд, непоколебима воля и вяра в хората.</p>
+                  <p>Послание към ученика: „Не е нужно да си герой, за да направиш добро. Достатъчно е да отстояваш мечтите си с достойнство, да се учиш непрекъснато и да имаш куража да променяш света около себе си към по-добро!“</p>
+                </details>
+                <details>
+                  <summary>Източници и автори</summary>
+                  <p>В предоставения материал са посочени исторически и архивни данни от Медицински университет – София, публикации за първата сърдечна трансплантация в България и на Балканите (1986 г.), биографични интервюта и архиви на БНТ и Централния държавен архив.</p>
+                  <p>Изготвили: Здравко Стойков и Александър Мечков.</p>
+                  <p>Екип по проекта: Здравко Стойков, Александър Мечков (11д).</p>
+                </details>
+              </div>
+            </details>
+          </article>
+          <article class="profile">
+            <span class="profile-kicker">Гражданска смелост</span>
+            <h3>Димитър Пешев</h3>
+            <p>Политикът от Кюстендил използва обществената си позиция, за да се противопостави на планираната депортация на евреите от старите предели на България.</p>
+            <details class="profile-full">
+              <summary>Прочети пълната история</summary>
+              <div class="profile-long">
+                <p>Димитър Пешев (1894–1973) е юрист, народен представител и заместник-председател на XXV Народно събрание. През март 1943 г. делегация от Кюстендил го уведомява за плановете за депортация на българските евреи. На 17 март Пешев организира протестно писмо до министър-председателя Богдан Филов; за два дни го подписват 43 народни представители. На 26 март Пешев е отстранен от поста си.</p>
+                <p>Неговата намеса, заедно с действията на други политици, общественици и религиозни водачи, допринася за спирането на депортацията на евреите от старите предели на България. След войната Пешев е осъден от Народния съд. През 1973 г. Яд Вашем го признава за Праведник на народите на света.</p>
+                <details>
+                  <summary>Важният исторически контекст</summary>
+                  <p>Биографията му съдържа и противоречие: през 1940 г. като народен представител той гласува за Закона за защита на нацията, а през 1943 г. се противопоставя на депортацията. Също така евреите от администрираните от България територии в Македония и Тракия са депортирани. Тези разграничения са важни, за да разказваме историята точно и да не приписваме спасяването на един човек.</p>
+                </details>
+                <details>
+                  <summary>Какъв избор можем да видим?</summary>
+                  <p>Пешев използва позицията си, за да повдигне въпроса публично и да потърси подкрепа от други представители. Историята му ни кара да се запитаме какво правим, когато законът или мнозинството застрашават човешкото достойнство.</p>
+                </details>
+                <details>
+                  <summary>Източници за допълнително четене</summary>
+                  <p><a href="https://www.yadvashem.org/yv/en/exhibitions/righteous/peshev.asp" target="_blank" rel="noreferrer">Яд Вашем: Димитър Пешев</a> · <a href="https://peshev.org/" target="_blank" rel="noreferrer">Фондация „Димитър Пешев“</a></p>
+                  <p>Екип по проекта: Антон Бонев, Димитър Димитров, Емре Халибрян (11б).</p>
+                </details>
+              </div>
+            </details>
+          </article>
+          <article class="profile">
+            <span class="profile-kicker">Саможертва и грижа</span>
+            <h3>Д-р Стефан Черкезов</h3>
+            <p>На 15 август 1963 г. лекарят се връща в горящ автобус след тежка катастрофа и помага на пътниците да се спасят.</p>
+            <details class="profile-full">
+              <summary>Прочети пълната история</summary>
+              <div class="profile-long">
+                <p>Стефан Черкезов (1937–1963) е лекар от село Виноград. На 15 август 1963 г. автобус се сблъсква с камион между Велико Търново и Горна Оряховица и избухва пожар. Черкезов изнася от горящия автобус 47 души, но получава тежки изгаряния и умира на следващия ден.</p>
+                <p>От 2005 г. 15 август се отбелязва в България като Ден на спасението — в памет на лекари и други хора, загинали при изпълнение на дълга си да помагат.</p>
+                <details>
+                  <summary>Какво ни разказва постъпката му?</summary>
+                  <p>Историята показва решителност и грижа за хора в непосредствена опасност. Тя заслужава уважение, но не бива да се превръща в очакване всеки да рискува живота си. В реална криза най-важни са безопасността, обучената помощ и бързото търсене на спасителни служби.</p>
+                </details>
+                <details>
+                  <summary>Източници за допълнително четене</summary>
+                  <p><a href="https://bg.wikipedia.org/wiki/Стефан_Черкезов" target="_blank" rel="noreferrer">Биографични данни и посочени източници за д-р Стефан Черкезов</a> · <a href="https://www.mobaltarnovo.com/" target="_blank" rel="noreferrer">МОБАЛ „Д-р Стефан Черкезов“ – Велико Търново</a></p>
+                  <p>Екип по проекта: Георги Ангелова, Симона Симидова (9б).</p>
+                </details>
+              </div>
+            </details>
+          </article>
+          <article class="profile">
+            <span class="profile-kicker">Дълг и цена на войната</span>
+            <h3>Димитър Списаревски</h3>
+            <p>Летецът загива на 20 декември 1943 г. по време на въздушна отбрана на София — град, изложен на бомбардировки и цивилни жертви.</p>
+            <details class="profile-full">
+              <summary>Прочети пълната история</summary>
+              <div class="profile-long">
+                <p>Димитър Списаревски (1916–1943), роден в Добрич, е български военен летец. След обучение в България и Германия служи в изтребителната авиация. На 20 декември 1943 г. участва в бой срещу американски бомбардировачи при отбраната на София. Загива на 27 години.</p>
+                <p>За последния му бой има различни свидетелства и описания. Според широко разпространения разказ Списаревски удря водещ бомбардировач с изтребителя си и загива. Посмъртно е произведен в чин капитан и награден с орден „За храброст“.</p>
+                <details>
+                  <summary>Да помним и цената на войната</summary>
+                  <p>Въздушните нападения над София отнемат живота на много цивилни и разрушават домове и обществени сгради. Затова историята на летеца не е само разказ за военна смелост: тя е и повод да мислим за хората, попаднали между воюващите страни, и за последиците от войната.</p>
+                </details>
+                <details>
+                  <summary>Източници за допълнително четене</summary>
+                  <p><a href="https://bnrnews.bg/main/post/403456/voynata-na-spaich-letetsat-geroy-i-epohata" target="_blank" rel="noreferrer">БНР: „Войната на Спаич – летецът герой и епохата“</a> · <a href="https://www.math.bas.bg/~telecom/CV/Nevena%20CV/Spisarevski.pdf" target="_blank" rel="noreferrer">Веселин Бончев, „Цената на саможертвата и признанието“</a></p>
+                  <p>Екип по проекта: Атанас Казалиев, Ивайло Джурелов, Никола Николов (10а).</p>
+                </details>
+              </div>
+            </details>
+          </article>
+          <article class="profile">
+            <span class="profile-kicker">Доброволчество и грижа</span>
+            <h3>Лазар Радков</h3>
+            <p>Парамедик и доброволец, който обединява хора около помощта за детските отделения и подготовката за спешни ситуации.</p>
+            <details class="profile-full">
+              <summary>Разгъни историята на Лазар Радков</summary>
+              <div class="profile-long">
+                <p>Лазар Радков е роден през 1983 г. в Пловдив. Той е фитнес инструктор и парамедик, който насочва уменията си към общественополезни каузи и доброволческа помощ.</p>
+                <details>
+                  <summary>„Капачки за бъдеще“</summary>
+                  <p>Инициативата събира капачки за рециклиране и дарения за медицинска апаратура. Първата кампания събира 8,5 тона капачки; заедно с финансовите дарения средствата стигат за кувьоз за болницата в Червен бряг. Според публикация на Forbes България към 2024 г. чрез кампанията са дарени 22 кувьоза и 5 специализирани линейки на обща стойност над 1 млн. лв.</p>
+                  <p>В кампанията участват много хора и местни координатори. Радков е сред основните двигатели, но каузата се разраства благодарение на общите усилия на доброволци, дарители и партньори.</p>
+                </details>
+                <details>
+                  <summary>Доброволци, готови да помагат</summary>
+                  <p>Радков участва и в развитието на „Клубове за бъдеще“ и „Спасителни клубове за бъдеще“. В тях доброволци се обучават по първа помощ и се подготвят да съдействат при бедствия и аварии. Паралелно Радков води обучения по първа помощ за ученици.</p>
+                  <p>Посланието, което често споделя, започва с грижа за себе си и близките, а после продължава с грижа за света около нас. Доброто тук не е дело на един човек, а умение хората да се организират и да действат заедно.</p>
+                </details>
+                <details>
+                  <summary>Източници за допълнително четене</summary>
+                  <p><a href="https://forbesbulgaria.com/2024/09/05/supersilite-na-lazar-radkov/" target="_blank" rel="noreferrer">Forbes България: „Суперсилите на Лазар Радков“</a> · <a href="https://www.btv.bg/shows/120-minuti/videos/kolko-mozhe-da-e-goljamo-sarceto-i-zarazno-li-e-dobroto.html" target="_blank" rel="noreferrer">bTV: „Колко може да е голямо сърцето и заразно ли е доброто?“</a></p>
+                </details>
+              </div>
+            </details>
+          </article>
+        </div>
+        <article class="profile">
+          <span class="profile-kicker">Таланти и родолюбие</span>
+          <h3>Васко Абаджиев</h3>
+          <p>Един от най-талантливите български цигулари на XX век, който с изключителен дар, труд и любов към родината си оставя траен отпечатък в българската музика.</p>
+          <details class="profile-full">
+            <summary>Прочети пълната история</summary>
+            <div class="profile-long">
+              <p>Васко Абаджиев е един от най-талантливите български цигулари на XX век. Още като малко дете той демонстрира изключителни музикални способности и постига международно признание.</p>
+              <p>Той завършва Българската държавна консерватория едва 9-годишен, което го прави най-младия дипломант в историята на българското висше образование.</p>
+              <p>Васко Абаджиев става най-младият дипломант на Българската консерватория едва на 9 години, а на 12 печели първа награда на международния конкурс „Фриц Крайслер“ в Белгия. В своята кариера той прославя България, изпълнявайки най-трудните цигулкови творби — включително всичките 24 капричии на Паганини в един концерт — на най-престижните европейски сцени.</p>
+              <p>В неговите действия личи пълно себеотдаване на изкуството, неуморим труд и непреходно родолюбие. Васко Абаджиев доказва предаността си към родината си, когато на върха на славата си отказва предложението на белгийския крал Леополд III за белгийско гражданство, избирайки да остане български гражданин.</p>
+              <details>
+                <summary>Мисълта, която го определя</summary>
+                <p>„Истинската дарба е само искрица — огънят се разпалва с труд, а се съхранява с обич към това, което правиш. Не се страхувай да мечтаеш смело, но помни, че пътят към върха изисква постоянство, вяра и корени, които никога да не забравяш.“</p>
+              </details>
+            </div>
+          </details>
+        </article>
+        <div class="abdzhiev-feature">
+          <div class="abdzhiev-images" role="group" aria-label="Колаж за Васко Абаджиев">
+            <button class="media-open portrait" type="button" data-gallery="abadzhiev" data-caption="Колаж за Васко Абаджиев"><img src="Picture1.jpg" alt="Биографичен колаж за цигуларя Васко Абаджиев"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cases-section" id="kazusi" aria-labelledby="kazusi-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">03 / ИЗБОР</span>
+          <div>
+            <h2 id="kazusi-title">А ти как би постъпил?</h2>
+            <p>Няма бутон за „перфектен отговор“. Избери какво би направил и прочети въпрос, който да ти помогне да премислиш решението.</p>
+          </div>
+        </div>
+        <div class="cases">
+          <article class="case" data-case="one">
+            <div class="case-copy">
+              <span class="case-label">Казус 1 · В клас</span>
+              <h3>Кой започна разговора?</h3>
+              <p>В час си и искаш да попиташ свой съученик дали може да отвори прозореца. Той ти отговаря, че не иска, защото навън е студено. Продължавате да разговаряте, а постепенно и други ученици се включват в разговора. Изведнъж учителят ви чува, ядосва се и прави забележка на твоя съученик, като го кара да излезе от класната стая.</p>
+              <p class="choice-question">Би ли казал на учителя, че ти си започнал разговора, и би ли поел вината, като излезеш ти вместо съученика си?</p>
+              <div class="choices">
+                <button class="choice" type="button" data-answer="Ще обясня спокойно как е започнал разговорът и ще поема своята част от отговорността.">Ще кажа истината</button>
+                <button class="choice" type="button" data-answer="Мълчанието може да предпази теб в момента, но съученикът ти ще понесе цялата вина. Как би могъл да говориш уважително и без да обвиняваш другите?">Ще замълча</button>
+              </div>
+              <p class="choice-response" aria-live="polite"></p>
+            </div>
+            <div class="case-gallery" aria-label="Илюстрации към казус 1, подредени последователно">
+              <button class="media-open" type="button" data-gallery="case-one" data-caption="Казус 1 · 1 от 3"><img src="viber_image_2026-10-30_08-27-16-636.jpg" alt="Учителят прави забележка в класната стая"></button>
+              <button class="media-open" type="button" data-gallery="case-one" data-caption="Казус 1 · 2 от 3"><img src="viber_image_2026-10-30_08-27-18-048.jpg" alt="Съученици разговарят за отворения прозорец в студен клас"></button>
+              <button class="media-open" type="button" data-gallery="case-one" data-caption="Казус 1 · 3 от 3"><img src="viber_image_2026-10-30_08-27-18-392.jpg" alt="Учителят посочва изхода, докато учениците наблюдават"></button>
+            </div>
+          </article>
+
+          <article class="case" data-case="two">
+            <div class="case-copy">
+              <span class="case-label">Казус 2 · На улицата</span>
+              <h3>Срещата или помощта?</h3>
+              <p>В оживения град млад мъж бърза за важна среща. По пътя си забелязва възрастна жена, която трудно носи две тежки кошници със зеленчуци. Забързаните минувачи я подминават, без да ѝ обърнат внимание. Младият мъж се изправя пред избор – да продължи към срещата си, или да спре и да помогне на жената.</p>
+              <p class="choice-question">Би ли спрял, за да ѝ помогнеш, дори ако това означава да закъснееш за важната си среща?</p>
+              <div class="choices">
+                <button class="choice" type="button" data-answer="Можеш да попиташ дали и каква помощ ѝ е нужна, после да ѝ кажеш честно, че бързаш. Помощта започва и с уважение към нейния избор.">Ще спра и ще попитам</button>
+                <button class="choice" type="button" data-answer="Понякога ангажиментът не може да чака. Можеш да потърсиш наблизо друг човек или да се обадиш за съдействие, вместо просто да подминеш.">Ще потърся друг начин</button>
+              </div>
+              <p class="choice-response" aria-live="polite"></p>
+            </div>
+            <div class="case-gallery" aria-label="Илюстрации към казус 2, подредени последователно">
+              <button class="media-open" type="button" data-gallery="case-two" data-caption="Казус 2 · 1 от 4"><img src="viber_image_2026-10-30_08-26-56-689.jpg" alt="Млад мъж забелязва възрастна жена в забързания град"></button>
+              <button class="media-open" type="button" data-gallery="case-two" data-caption="Казус 2 · 2 от 4"><img src="viber_image_2026-10-30_08-26-58-056.jpg" alt="Младият мъж се замисля дали да помогне"></button>
+              <button class="media-open" type="button" data-gallery="case-two" data-caption="Казус 2 · 3 от 4"><img src="viber_image_2026-10-30_08-26-58-507.jpg" alt="Възрастна жена носи две тежки кошници"></button>
+              <button class="media-open" type="button" data-gallery="case-two" data-caption="Казус 2 · 4 от 4"><img src="viber_image_2026-10-30_08-26-58-943.jpg" alt="Млад мъж бърза към важна среща"></button>
+            </div>
+          </article>
+
+          <article class="case" data-case="three">
+            <div class="case-copy">
+              <span class="case-label">Казус 3 · На спирката</span>
+              <h3>Пари, храна или разговор?</h3>
+              <p>Представи си, че си на спирката и чакаш автобуса. В джоба си имаш 10 евро. Към теб се приближава мъж, който видимо изглежда пиян, и те моли за 5 евро. Обяснява, че парите са му нужни, за да купи храна за себе си и за жена си. Външният му вид обаче те кара да се съмняваш, че ще използва парите за храна, а не за алкохол. Въпреки това не можеш да бъдеш сигурен в намеренията му.</p>
+              <p class="choice-question">Би ли му дал 5 евро, или би отказал? Защо?</p>
+              <div class="choices">
+                <button class="choice" type="button" data-answer="Даването на пари е личен избор. Помисли какво знаеш, как се чувстваш в ситуацията и дали можеш да предложиш помощ по друг начин.">Ще дам пари</button>
+                <button class="choice" type="button" data-answer="Можеш да предложиш храна или да посочиш място за подкрепа, ако е безопасно и удобно. Не си длъжен да влизаш в ситуация, която те кара да се чувстваш застрашен.">Ще предложа храна</button>
+                <button class="choice" type="button" data-answer="Имаш право да откажеш, особено ако не се чувстваш в безопасност. Отказът може да бъде кратък и спокоен, без унижение.">Ще откажа спокойно</button>
+              </div>
+              <p class="choice-response" aria-live="polite"></p>
+            </div>
+            <div class="case-gallery" aria-label="Илюстрация към казус 3">
+              <button class="media-open" type="button" data-gallery="case-three" data-caption="Казус 3 · Молба за помощ на автобусната спирка"><img src="viber_image_2026-10-30_08-27-50-902.jpg" alt="Мъж моли млад човек на автобусната спирка за пари за храна"></button>
+            </div>
+          </article>
+        </div>
+        <p class="safety-note">При реална ситуация постави безопасността си на първо място. Потърси възрастен или служба за помощ, когато е необходимо.</p>
+      </div>
+    </section>
+
+    <section class="section comics-section" id="kadri" aria-labelledby="kadri-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">04 / ИСТОРИЯ</span>
+          <div>
+            <h2 id="kadri-title">Доброто в кадри</h2>
+            <p>Избери една от четирите истории. Прочети страниците в ред, увеличи текста и отвори всяка кратка история самостоятелно.</p>
+          </div>
+        </div>
+        <div class="comic-intro">
+          <button class="media-open" type="button" data-gallery="screen-cover" data-caption="Корица на комикса „Отвъд екрана“"><img src="viber_image_2026-11-02_07-20-23-206.jpg" alt="Корица на комикса „Будител на доброто — днес отвъд екрана“"></button>
+          <div>
+            <p class="eyebrow" style="color:var(--rust)">История 01 · Отвъд екрана</p>
+            <h3>Една история за избора, който правим, когато другите гледат.</h3>
+            <p>В училище ученичка вижда как нечие неудобство се превръща в повод за подигравки и споделяне онлайн. Тя трябва да реши дали да остане незабелязана, или да помогне.</p>
+            <p>Корица и пет страници в последователния ред на историята. Всички герои и събития в комикса са художествени.</p>
+          </div>
+        </div>
+        <div class="comic-story">
+          <div class="comic-tabs" role="tablist" aria-label="Избери комикс">
+            <button class="comic-tab" id="tab-screen" type="button" role="tab" aria-selected="true" aria-controls="story-screen" data-story-tab="story-screen">01 · Отвъд екрана</button>
+            <button class="comic-tab" id="tab-kindness" type="button" role="tab" aria-selected="false" aria-controls="story-kindness" data-story-tab="story-kindness" tabindex="-1">02 · Доброто се предава</button>
+            <button class="comic-tab" id="tab-school" type="button" role="tab" aria-selected="false" aria-controls="story-school" data-story-tab="story-school" tabindex="-1">03 · Междучасието</button>
+          </div>
+          <section class="comic-panel" id="story-screen" role="tabpanel" aria-labelledby="tab-screen">
+            <div class="comic-story-head">
+              <h3>Отвъд екрана</h3>
+                <p>Корица · 5 страници · в правилния ред</p>
+            </div>
+            <div class="comic-reader" aria-label="Четец на комикса Отвъд екрана">
+              <div class="reader-frame">
+                <button class="reader-arrow" type="button" data-reader-step="-1" aria-label="Предишна страница">‹</button>
+                <div class="reader-page-wrap">
+                  <img class="reader-page-image" src="viber_image_2026-11-02_07-20-22-290.jpg" alt="Страница 1: ден преди училищната изложба, съученик поврежда макета">
+                </div>
+                <button class="reader-arrow" type="button" data-reader-step="1" aria-label="Следваща страница">›</button>
+              </div>
+              <div class="reader-meta">
+                <h4 class="reader-title">Ден преди изложбата</h4>
+                <p class="reader-count" aria-live="polite">Страница 1 от 5</p>
+                <div class="reader-progress" aria-hidden="true"><span></span></div>
+              </div>
+              <div class="reader-tools">
+                <button class="reader-step" type="button" data-reader-step="-1">← Предишна</button>
+                <div class="reader-pages" aria-label="Избери страница">
+                  <button class="reader-page-button" type="button" data-reader-page="0" aria-label="Страница 1" aria-current="page">1</button>
+                  <button class="reader-page-button" type="button" data-reader-page="1" aria-label="Страница 2">2</button>
+                  <button class="reader-page-button" type="button" data-reader-page="2" aria-label="Страница 3">3</button>
+                  <button class="reader-page-button" type="button" data-reader-page="3" aria-label="Страница 4">4</button>
+                  <button class="reader-page-button" type="button" data-reader-page="4" aria-label="Страница 5">5</button>
+                </div>
+                <button class="reader-step" type="button" data-reader-step="1">Следваща →</button>
+              </div>
+              <div class="reader-zoom-row">
+                <button class="reader-zoom" type="button" aria-pressed="false">⌕ Увеличи страницата</button>
+              </div>
+              <p class="reader-hint">Използвай стрелките, бутоните с номера или клавишите ← и →.</p>
+            </div>
+          </section>
+          <section class="comic-panel" id="story-kindness" role="tabpanel" aria-labelledby="tab-kindness" hidden>
+            <div class="comic-story-head">
+              <h3>Доброто се предава</h3>
+              <p>Една история · последователни сцени</p>
+            </div>
+            <div class="gestures-panel">
+              <button class="media-open" type="button" data-gallery="comic-goodness" data-comic-image data-caption="Доброто се предава · цялата история"><img src="viber_image_2026-11-04_16-29-29-939.jpg" alt="Комикс за малките добрини, които се предават нататък: момиче отстъпва място в автобуса, ученик помага на възрастна жена и съученици си подават ръка"></button>
+              <div class="gestures-caption">
+                <h4>Една малка помощ може да продължи нататък.</h4>
+                <p>Няколко добри жеста свързват непознати и съученици в една обща история. Натисни изображението, за да го разгледаш в пълен размер.</p>
+              </div>
+            </div>
+          </section>
+          <section class="comic-panel" id="story-school" role="tabpanel" aria-labelledby="tab-school" hidden>
+            <div class="comic-story-head">
+              <h3>Междучасието · „Бъди добър!“</h3>
+              <p>Една история · от поканата до приятелството</p>
+            </div>
+            <div class="gestures-panel">
+              <button class="media-open" type="button" data-gallery="comic-school" data-comic-image data-caption="Междучасието · цялата история"><img src="viber_image_2026-11-04_16-41-01-242.jpg" alt="Комикс за момче, което е самотно в междучасието; съученици го канят при себе си и започват заедно проекта „Бъди добър!“"></button>
+              <div class="gestures-caption">
+                <h4>Една покана може да промени междучасието.</h4>
+                <p>Съученици забелязват момче, което стои само, канят го в компанията си и заедно създават проекта „Бъди добър!“.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section good-section" id="dobro" aria-labelledby="dobro-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">05 / В ЖИВОТА</span>
+          <div>
+            <h2 id="dobro-title">Доброто е заразно</h2>
+            <p>Истории за взаимопомощ и отговорност. Един пример може да даде смелост на следващия човек да направи същото.</p>
+          </div>
+        </div>
+        <div class="good-story">
+          <button class="media-open" type="button" data-gallery="real-example" data-caption="Ученическа графична история за Виктория и помощта към възрастна съседка"><img src="viber_image_2026-10-30_15-08-33-520.jpg" alt="Графична история за Виктория, която помага на възрастна жена със задачите и покупките"></button>
+          <div>
+            <p class="eyebrow" style="color:var(--rust)">История от предоставения материал</p>
+            <h3>Грижата се превръща в навик</h3>
+            <p>В графичната история Виктория започва с малка помощ към възрастна съседка. После тя се свързва с други хора и подкрепата става общо дело.</p>
+            <p>Материалът представя случката като реална история. Преди да публикувате имена, интервюта или лични подробности, проверете фактите и вземете съгласие от участниците.</p>
+            <p class="quote-line">„Доброто се предава нататък.“</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section code-section" id="kodeks" aria-labelledby="kodeks-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">06 / ДЕЙСТВИЕ</span>
+          <div>
+            <h2 id="kodeks-title">Започни от себе си</h2>
+            <p>Десет кратки принципа, формулирани в ученически дух. Избери един, който искаш да приложиш още днес.</p>
+          </div>
+        </div>
+        <div class="code-layout">
+          <div class="principle-groups">
+            <section class="principle-group" aria-labelledby="toward-others">
+              <h3 id="toward-others">Към другите</h3>
+              <ol>
+                <li>Уважаваме всеки човек – независимо от неговите различия.</li>
+                <li>Изслушваме се – защото всяко мнение заслужава внимание.</li>
+                <li>Говорим с доброта – думите могат да лекуват, но и да нараняват.</li>
+                <li>Не изключваме никого – подаваме ръка и включваме всички.</li>
+              </ol>
+            </section>
+            <section class="principle-group" aria-labelledby="injustice">
+              <h3 id="injustice">При несправедливост</h3>
+              <ol start="5">
+                <li>Не подминаваме обидата и тормоза – заставаме до този, който страда.</li>
+                <li>Имаме смелост да кажем истината – дори когато е трудно.</li>
+                <li>Избираме диалога, а не насилието – решаваме конфликтите с разум и уважение.</li>
+              </ol>
+            </section>
+            <section class="principle-group" aria-labelledby="common-good">
+              <h3 id="common-good">За общото благо</h3>
+              <ol start="8">
+                <li>Пазим училището и обществените места – те са общ дом.</li>
+                <li>Грижим се за природата – не замърсяваме и не разхищаваме.</li>
+                <li>Даваме личен пример – човечността започва от нашите постъпки.</li>
+              </ol>
+            </section>
+            <div class="pledge">
+              <p class="pledge-text">Кое добро ще направиш днес?</p>
+              <button class="button pledge-button" type="button" aria-pressed="false">Избирам своята постъпка</button>
+            </div>
+          </div>
+          <figure class="code-poster">
+            <button class="media-open" type="button" data-gallery="personal-code" data-caption="Плакатът „Моят личен кодекс по човечност“"><img src="viber_image_2026-11-02_11-43-01-424.jpg" alt="Плакат с десет принципа по човечност, разделени в три тематични групи"></button>
+            <figcaption>Плакатът от предоставените материали. Отвори за по-голям размер.</figcaption>
+          </figure>
+        </div>
+        <div style="margin-top:42px; display:grid; grid-template-columns:minmax(0, .7fr) minmax(0, 1.3fr); gap:28px; align-items:center">
+          <button class="media-open" type="button" data-gallery="values" data-caption="Илюстрация към принципа да не изключваме никого"><img src="Screenshot 2026-11-02 140714.png" alt="Ученик остава сам сред съученици; илюстрация към темата за подкрепата и тормоза"></button>
+          <p style="margin:0; color:var(--muted)">Да застанеш до човек, който е изолиран или обиждан, не означава да се излагаш на опасност. Понякога най-смелата първа стъпка е да потърсиш доверен възрастен и да не разпространяваш унизителни снимки или клипове.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section words-section" id="dumi" aria-labelledby="dumi-title">
+      <div class="section-inner">
+        <div class="section-head">
+          <span class="section-number">07 / ДОБРА ДУМА</span>
+          <div>
+            <h2 id="dumi-title">Думи, които помагат</h2>
+            <p>Понякога точните думи са най-малкият и най-важният жест. Избери израз, който би искал някой да чуе.</p>
+          </div>
+        </div>
+        <div class="words-layout">
+          <div class="words-groups">
+            <section class="words-group" aria-labelledby="words-support">
+              <h3 id="words-support">Думи за подкрепа</h3>
+              <div class="phrase-list">
+                <button class="phrase-button" type="button" data-phrase>„Вярвам в теб!“</button>
+                <button class="phrase-button" type="button" data-phrase>„Ще се справиш!“</button>
+                <button class="phrase-button" type="button" data-phrase>„Не се отказвай!“</button>
+                <button class="phrase-button" type="button" data-phrase>„Ако имаш нужда, можеш да разчиташ на мен.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Не си сам в това.“</button>
+              </div>
+            </section>
+            <section class="words-group" aria-labelledby="words-thanks">
+              <h3 id="words-thanks">Благодарност и уважение</h3>
+              <div class="phrase-list">
+                <button class="phrase-button" type="button" data-phrase>„Благодаря ти за помощта!“</button>
+                <button class="phrase-button" type="button" data-phrase>„Оценявам това, което правиш.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Радвам се, че ми помогна.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Извинявай, ако съм те засегнал.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Уважавам твоето мнение.“</button>
+              </div>
+            </section>
+            <section class="words-group" aria-labelledby="words-hard">
+              <h3 id="words-hard">В трудни моменти</h3>
+              <div class="phrase-list">
+                <button class="phrase-button" type="button" data-phrase>„Искаш ли да поговорим?“</button>
+                <button class="phrase-button" type="button" data-phrase>„Разбирам, че ти е трудно.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Тук съм, за да те изслушам.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Няма нищо лошо да поискаш помощ.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Всеки прави грешки. Важното е да се учим от тях.“</button>
+              </div>
+            </section>
+            <section class="words-group" aria-labelledby="words-kindness">
+              <h3 id="words-kindness">Насърчаване на добротата</h3>
+              <div class="phrase-list">
+                <button class="phrase-button" type="button" data-phrase>„Нека си помогнем!“</button>
+                <button class="phrase-button" type="button" data-phrase>„Няма нужда да се подиграваме.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Нека изслушаме и другата страна.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Можем да решим проблема спокойно.“</button>
+                <button class="phrase-button" type="button" data-phrase>„Нека се отнасяме един към друг с уважение.“</button>
+              </div>
+            </section>
+            <section class="words-message">
+              <h3>Моето послание</h3>
+              <p>Думите имат силата да насърчават, да успокояват и да дават надежда. Понякога едно искрено „Благодаря“, „Извинявай“ или „Вярвам в теб“ може да промени нечий ден. Затова трябва да избираме думите си внимателно и да използваме езика си, за да помагаме, а не да нараняваме.</p>
+            </section>
+          </div>
+          <div class="words-cards" aria-label="Плакат и картички за добрите думи">
+            <figure class="words-card is-featured">
+              <button class="media-open" type="button" data-gallery="helpful-words-cards" data-caption="Плакат: Една добра дума може да бъде по-силна от най-голямата неволя"><img src="viber_image_2026-11-05_07-56-12-766.jpg" alt="Плакат „Думи, които помагат“: една добра дума може да бъде по-силна от най-голямата неволя; списък за подкрепа, доверие, уважение и добри думи"></button>
+              <figcaption>Една добра дума може да бъде по-силна от най-голямата неволя.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Наръчник по човечност · Малките избори имат значение.</p>
+      <a class="to-top" href="#nachalo">Нагоре ↑</a>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" aria-label="Преглед на изображения">
+    <div class="lightbox-frame">
+      <button class="lightbox-close" type="button" aria-label="Затвори">×</button>
+      <button class="lightbox-step lightbox-prev" type="button" aria-label="Предишно изображение">‹</button>
+      <img class="lightbox-image" alt="">
+      <button class="lightbox-step lightbox-next" type="button" aria-label="Следващо изображение">›</button>
+    </div>
+    <p class="lightbox-caption" aria-live="polite"></p>
+  </dialog>
+  <div class="copy-status" role="status" aria-live="polite"></div>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const progressFill = document.querySelector('.progress-fill');
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = document.querySelector('.lightbox-image');
+    const lightboxCaption = document.querySelector('.lightbox-caption');
+    let activeGallery = [];
+    let activeImageIndex = 0;
+
+    const setMenuOpen = (isOpen) => {
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Затвори менюто с раздели' : 'Отвори менюто с раздели');
+      navLinks.classList.toggle('is-open', isOpen);
+    };
+
+    menuToggle.addEventListener('click', () => {
+      setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    navLinks.addEventListener('click', (event) => {
+      if (event.target.closest('a')) {
+        setMenuOpen(false);
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.topbar')) setMenuOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+        setMenuOpen(false);
+        menuToggle.focus();
+      }
+    });
+
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      progressFill.style.width = `${scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0}%`;
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        document.querySelectorAll('.nav-links a').forEach((link) => {
+          if (link.getAttribute('href') === `#${entry.target.id}`) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-35% 0px -55% 0px' });
+    document.querySelectorAll('main > section[id]').forEach((section) => navObserver.observe(section));
+
+    document.querySelectorAll('.case').forEach((caseElement) => {
+      const response = caseElement.querySelector('.choice-response');
+      caseElement.querySelectorAll('.choice').forEach((button) => {
+        button.addEventListener('click', () => {
+          caseElement.querySelectorAll('.choice').forEach((choice) => choice.setAttribute('aria-pressed', String(choice === button)));
+          response.textContent = button.dataset.answer;
+        });
+      });
+    });
+
+    const copyStatus = document.querySelector('.copy-status');
+    let copyStatusTimer;
+    document.querySelectorAll('[data-phrase]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const phrase = button.textContent.trim();
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(phrase);
+          } else {
+            const temporaryInput = document.createElement('textarea');
+            temporaryInput.value = phrase;
+            temporaryInput.setAttribute('readonly', '');
+            temporaryInput.style.position = 'fixed';
+            temporaryInput.style.opacity = '0';
+            document.body.append(temporaryInput);
+            temporaryInput.select();
+            const copied = document.execCommand('copy');
+            temporaryInput.remove();
+            if (!copied) throw new Error('Clipboard copy was unavailable');
+          }
+          copyStatus.textContent = `Копирано: ${phrase}`;
+        } catch {
+          copyStatus.textContent = phrase;
+        }
+        copyStatus.classList.add('is-visible');
+        window.clearTimeout(copyStatusTimer);
+        copyStatusTimer = window.setTimeout(() => copyStatus.classList.remove('is-visible'), 2200);
+      });
+    });
+
+    const comicTabs = [...document.querySelectorAll('[data-story-tab]')];
+    const comicPanels = [...document.querySelectorAll('.comic-panel')];
+    const selectComic = (tab, focus = false) => {
+      comicTabs.forEach((item) => {
+        const selected = item === tab;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
+      });
+      comicPanels.forEach((panel) => {
+        panel.hidden = panel.id !== tab.dataset.storyTab;
+      });
+      if (focus) tab.focus();
+    };
+    comicTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectComic(tab));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? comicTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + comicTabs.length) % comicTabs.length;
+        selectComic(comicTabs[nextIndex], true);
+      });
+    });
+
+    const storyPages = [
+      { src: 'viber_image_2026-11-02_07-20-22-290.jpg', title: 'Ден преди изложбата', alt: 'Страница 1: ден преди училищната изложба, съученик поврежда макета' },
+      { src: 'viber_image_2026-11-02_07-20-22-722.jpg', title: 'Няма да го изпратя', alt: 'Страница 2: ученичката отказва да разпространява клипа и решава да помогне' },
+      { src: 'viber_image_2026-11-02_07-20-21-821.jpg', title: 'Да потърсим подкрепа', alt: 'Страница 3: учениците решават да говорят с учител' },
+      { src: 'viber_image_2026-11-02_07-20-21-431.jpg', title: 'Поправяме го заедно', alt: 'Страница 4: съученици поправят макета заедно' },
+      { src: 'viber_image_2026-11-02_07-20-20-026.jpg', title: 'На следващия ден', alt: 'Страница 5: учениците виждат завършения макет на следващия ден' }
+    ];
+    const reader = document.querySelector('.comic-reader');
+    const readerImage = reader.querySelector('.reader-page-image');
+    const readerTitle = reader.querySelector('.reader-title');
+    const readerCount = reader.querySelector('.reader-count');
+    const readerProgress = reader.querySelector('.reader-progress span');
+    const readerPageButtons = [...reader.querySelectorAll('[data-reader-page]')];
+    const readerPageWrap = reader.querySelector('.reader-page-wrap');
+    const readerZoom = reader.querySelector('.reader-zoom');
+    let activePageIndex = 0;
+    const showReaderPage = (requestedIndex) => {
+      activePageIndex = (requestedIndex + storyPages.length) % storyPages.length;
+      const currentPage = storyPages[activePageIndex];
+      readerImage.src = currentPage.src;
+      readerImage.alt = currentPage.alt;
+      readerTitle.textContent = currentPage.title;
+      readerCount.textContent = `Страница ${activePageIndex + 1} от ${storyPages.length}`;
+      readerProgress.style.width = `${((activePageIndex + 1) / storyPages.length) * 100}%`;
+      readerPageButtons.forEach((button, index) => {
+        if (index === activePageIndex) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+      });
+      readerPageWrap.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+      readerPageWrap.classList.remove('is-zoomed');
+      readerZoom.setAttribute('aria-pressed', 'false');
+      readerZoom.textContent = '⌕ Увеличи страницата';
+    };
+    reader.querySelectorAll('[data-reader-step]').forEach((button) => {
+      button.addEventListener('click', () => showReaderPage(activePageIndex + Number(button.dataset.readerStep)));
+    });
+    readerPageButtons.forEach((button) => {
+      button.addEventListener('click', () => showReaderPage(Number(button.dataset.readerPage)));
+    });
+    readerZoom.addEventListener('click', () => {
+      const zoomed = readerZoom.getAttribute('aria-pressed') !== 'true';
+      readerZoom.setAttribute('aria-pressed', String(zoomed));
+      readerPageWrap.classList.toggle('is-zoomed', zoomed);
+      readerZoom.textContent = zoomed ? '− Намали страницата' : '⌕ Увеличи страницата';
+    });
+    document.addEventListener('keydown', (event) => {
+      if (lightbox.open || document.querySelector('#story-screen').hidden || event.target.closest('button, a, input, textarea, select')) return;
+      if (event.key === 'ArrowLeft') showReaderPage(activePageIndex - 1);
+      if (event.key === 'ArrowRight') showReaderPage(activePageIndex + 1);
+    });
+
+    const showLightboxImage = () => {
+      const button = activeGallery[activeImageIndex];
+      const image = button.querySelector('img');
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt;
+      lightboxCaption.textContent = button.dataset.caption || image.alt;
+      const showControls = activeGallery.length > 1;
+      document.querySelector('.lightbox-prev').hidden = !showControls;
+      document.querySelector('.lightbox-next').hidden = !showControls;
+    };
+
+    document.querySelectorAll('.media-open').forEach((button) => {
+      button.addEventListener('click', () => {
+        activeGallery = [...document.querySelectorAll(`.media-open[data-gallery="${button.dataset.gallery}"]`)];
+        activeImageIndex = activeGallery.indexOf(button);
+        showLightboxImage();
+        lightbox.showModal();
+      });
+    });
+
+    document.querySelector('.lightbox-close').addEventListener('click', () => lightbox.close());
+    document.querySelector('.lightbox-prev').addEventListener('click', () => {
+      activeImageIndex = (activeImageIndex - 1 + activeGallery.length) % activeGallery.length;
+      showLightboxImage();
+    });
+    document.querySelector('.lightbox-next').addEventListener('click', () => {
+      activeImageIndex = (activeImageIndex + 1) % activeGallery.length;
+      showLightboxImage();
+    });
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (!lightbox.open || activeGallery.length < 2) return;
+      if (event.key === 'ArrowRight') document.querySelector('.lightbox-next').click();
+      if (event.key === 'ArrowLeft') document.querySelector('.lightbox-prev').click();
+    });
+
+    const pledgeButton = document.querySelector('.pledge-button');
+    const pledgeText = document.querySelector('.pledge-text');
+    pledgeButton.addEventListener('click', () => {
+      const isSelected = pledgeButton.getAttribute('aria-pressed') === 'true';
+      pledgeButton.setAttribute('aria-pressed', String(!isSelected));
+      pledgeButton.textContent = isSelected ? 'Избирам своята постъпка' : 'Запазих избора си';
+      pledgeText.textContent = isSelected ? 'Кое добро ще направиш днес?' : 'Твоето добро започва сега.';
+    });
+  </script>
+</body>
+</html>
